@@ -1,12 +1,13 @@
-FROM golang:1.17.2-alpine AS builder
+FROM golang:1.23.4-alpine AS builder
 
 WORKDIR /src
 COPY . .
 
-RUN go mod download && \
+RUN apk add --no-cache git && \
+    go mod download && \
     CGO_ENABLED=0 go build -ldflags="-s -w" -o "wgcf"
 
-FROM alpine:3.14.2
+FROM alpine:3.21.0
 
 WORKDIR /
 
